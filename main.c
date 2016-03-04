@@ -58,13 +58,15 @@ int main(int argc, char *argv[])
         while (line[i] != '\0')
             i++;
         line[i - 1] = '\0';
-        i = 0;
 #if defined(OPT)
-        e = head_char[line[0] - 96];
-        head_char[line[0]-96] = append(line,e);
+        index_first = line[0] - 96;
+        index_second = (line[1] < 96) ? 26 : line[1] - 96;
+        e = head_char[index_first][index_second];
+        head_char[index_first][index_second] = append(line,e);
 #else
         e = append(line, e);
 #endif
+        i = 0;
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -75,17 +77,24 @@ int main(int argc, char *argv[])
     //e = pHead;
 
     /* the givn last name to find */
-    //char input[MAX_LAST_NAME_SIZE] = "zyxel";
-    char input[MAX_LAST_NAME_SIZE] = "archimage";
+    char input[MAX_LAST_NAME_SIZE] = "zyxel";
+    char search_result[MAX_LAST_NAME_SIZE] = "";
+    //char input[MAX_LAST_NAME_SIZE] = "archimage";
 #if defined(OPT)
-    e = head_char[input[0] - 96];
+    index_first = input[0] - 96;
+    index_second = (input[1] < 96) ? 26 : input[1] - 96;
+    e = head_char[index_first][index_second];
+    search_result[0] = index_first + 96;
+    search_result[1] = index_second + 96;
 #else
     e = pHead;
 #endif
-    //test(e);
+    //tddest(e);
     assert(findName(input, e) &&
            "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e)->lastName, "archimage"));
+    strcat(search_result,findName(input, e)->lastName);
+    //printf("=>%s\n",search_result);
+    assert(0 == strcmp(search_result, "zyxel"));
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));

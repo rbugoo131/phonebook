@@ -7,10 +7,11 @@
 /* FILL YOUR OWN IMPLEMENTATION HERE! */
 entry *findName(char lastname[], entry *pHead)
 {
-    /* TODO: implement */
+    char name[MAX_LAST_NAME_SIZE] = "";
+    strncpy(name,lastname+MINUS,MAX_LAST_NAME_SIZE-MINUS);
     while(pHead!=NULL) {
         //printf("%s\n",pHead->lastName);
-        if(!strcasecmp(lastname, pHead->lastName))
+        if(!strcasecmp(name, pHead->lastName))
             return pHead;
         pHead = pHead->pNext;
     }
@@ -20,8 +21,10 @@ entry *findName(char lastname[], entry *pHead)
 void init_head_char()
 {
     int i = 0;
+    int j = 0;
     for(i = 0; i<26; i++)
-        head_char[i] = NULL;
+        for(j = 0; j<27; j++)
+            head_char[i][j] = NULL;
 }
 
 entry *append(char lastName[], entry *e)
@@ -36,16 +39,8 @@ entry *append(char lastName[], entry *e)
     new_entry = (entry *)malloc(sizeof(entry));
     //e = e->pNext;
     //strcpy(e->lastName,lastName);
-    strcpy(new_entry->lastName,lastName);
+    strncpy(new_entry->lastName,lastName+MINUS,MAX_LAST_NAME_SIZE-MINUS);
     e->pNext = new_entry;
     new_entry->pNext = temp;
     return e;
-}
-
-void test(entry *e)
-{
-    while(e!=NULL) {
-        printf("%s\n",e->lastName);
-        e = e->pNext;
-    }
 }
