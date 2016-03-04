@@ -38,20 +38,33 @@ int main(int argc, char *argv[])
 
     /* build the entry */
     entry *pHead, *e;
+
     pHead = (entry *) malloc(sizeof(entry));
-    printf("size of entry : %lu bytes\n", sizeof(entry));
+#if defined(OPT)
+    init_head_char();
+#else
     e = pHead;
     e->pNext = NULL;
+#endif
+
+    printf("size of entry : %lu bytes\n", sizeof(entry));
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
     clock_gettime(CLOCK_REALTIME, &start);
+
     while (fgets(line, sizeof(line), fp)) {
         while (line[i] != '\0')
             i++;
         line[i - 1] = '\0';
         i = 0;
+#if defined(OPT)
+        e = head_char[line[0] - 96];
+        head_char[line[0]-96] = append(line,e);
+#else
         e = append(line, e);
+#endif
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -59,15 +72,20 @@ int main(int argc, char *argv[])
     /* close file as soon as possible */
     fclose(fp);
 
-    e = pHead;
+    //e = pHead;
 
     /* the givn last name to find */
-    char input[MAX_LAST_NAME_SIZE] = "zyxel";
+    //char input[MAX_LAST_NAME_SIZE] = "zyxel";
+    char input[MAX_LAST_NAME_SIZE] = "archimage";
+#if defined(OPT)
+    e = head_char[input[0] - 96];
+#else
     e = pHead;
-
+#endif
+    //test(e);
     assert(findName(input, e) &&
            "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e)->lastName, "zyxel"));
+    assert(0 == strcmp(findName(input, e)->lastName, "archimage"));
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));

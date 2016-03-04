@@ -21,12 +21,13 @@ typedef struct _PHONEBOOK_REST_ITEM {
 
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
-    //detail_item *rest;
+    detail_item *rest;
     struct __PHONE_BOOK_ENTRY *pNext;
 } entry;
 
-entry *head_char[26];
+static entry *head_char[26];
 
+void init_head_char();
 entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *e);
 
