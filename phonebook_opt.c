@@ -8,11 +8,24 @@
 entry *findName(char lastname[], entry *pHead)
 {
     char name[MAX_LAST_NAME_SIZE] = "";
-    strncpy(name,lastname+MINUS,MAX_LAST_NAME_SIZE-MINUS);
+    int length = 0;
+    int compare_length = sizeof(pHead->lastName);
+    length = strlen(lastname)-MINUS;
+    strncpy(name,lastname+MINUS,length);
     while(pHead!=NULL) {
-        //printf("%s\n",pHead->lastName);
-        if(!strcasecmp(name, pHead->lastName))
-            return pHead;
+        compare_length = (pHead->lastName == NULL) ? 0 : strlen(pHead->lastName);
+        /*while(pHead->lastName!='\0')
+        {
+        	printf("%d %c\n",compare_length,pHead->lastName);
+        	compare_length++;
+        	getchar();
+        }*/
+        //strcpy(test,pHead->lastName);
+        //test = pHead->lastName;
+        if(length == compare_length) {
+            if(!strcasecmp(name, pHead->lastName))
+                return pHead;
+        }
         pHead = pHead->pNext;
     }
     return NULL;
@@ -22,12 +35,15 @@ void init_head_char()
 {
     int i = 0;
     int j = 0;
-    for(i = 0; i<26; i++)
+    for(i = 0; i<24; i++)
         for(j = 0; j<27; j++)
-            head_char[i][j] = NULL;
+            head_char1[i][j] = NULL;
+    for(i=0; i<2; i++)
+        for(j=0; j<28; j++)
+            head_char0[i][j] = NULL;
 }
 
-entry *append(char lastName[], entry *e)
+entry *append(char lastName[], entry *e,int length)
 {
     entry *temp;
     if(e == NULL) {
@@ -39,7 +55,9 @@ entry *append(char lastName[], entry *e)
     new_entry = (entry *)malloc(sizeof(entry));
     //e = e->pNext;
     //strcpy(e->lastName,lastName);
-    strncpy(new_entry->lastName,lastName+MINUS,MAX_LAST_NAME_SIZE-MINUS);
+    new_entry->lastName = (char*)malloc(length * sizeof(char));
+    //strncpy(new_entry->lastName,lastName+MINUS,MAX_LAST_NAME_SIZE-MINUS);
+    strncpy(new_entry->lastName,lastName+MINUS, length-MINUS);
     e->pNext = new_entry;
     new_entry->pNext = temp;
     return e;

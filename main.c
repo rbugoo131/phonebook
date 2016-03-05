@@ -61,8 +61,13 @@ int main(int argc, char *argv[])
 #if defined(OPT)
         index_first = line[0] - 96;
         index_second = (line[1] < 96) ? 26 : line[1] - 96;
-        e = head_char[index_first][index_second];
-        head_char[index_first][index_second] = append(line,e);
+        if(index_first < 2) {
+            e = head_char0[index_first][index_second];
+            head_char0[index_first][index_second] = append(line,e,i);
+        } else {
+            e = head_char1[index_first-2][index_second];
+            head_char1[index_first-2][index_second] = append(line,e,i);
+        }
 #else
         e = append(line, e);
 #endif
@@ -83,7 +88,8 @@ int main(int argc, char *argv[])
 #if defined(OPT)
     index_first = input[0] - 96;
     index_second = (input[1] < 96) ? 26 : input[1] - 96;
-    e = head_char[index_first][index_second];
+    if(index_first < 2) e = head_char0[index_first][index_second];
+    else e = head_char1[index_first -2][index_second];
     search_result[0] = index_first + 96;
     search_result[1] = index_second + 96;
 #else
