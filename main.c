@@ -63,10 +63,10 @@ int main(int argc, char *argv[])
         index_second = (line[1] < 96) ? 26 : line[1] - 96;
         if(index_first < 2) {
             e = head_char0[index_first][index_second];
-            head_char0[index_first][index_second] = append(line,e,i);
+            head_char0[index_first][index_second] = append(line,e);
         } else {
             e = head_char1[index_first-2][index_second];
-            head_char1[index_first-2][index_second] = append(line,e,i);
+            head_char1[index_first-2][index_second] = append(line,e);
         }
 #else
         e = append(line, e);

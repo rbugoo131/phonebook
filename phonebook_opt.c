@@ -4,7 +4,6 @@
 
 #include "phonebook_opt.h"
 
-/* FILL YOUR OWN IMPLEMENTATION HERE! */
 entry *findName(char lastname[], entry *pHead)
 {
     char name[MAX_LAST_NAME_SIZE] = "";
@@ -14,14 +13,6 @@ entry *findName(char lastname[], entry *pHead)
     strncpy(name,lastname+MINUS,length);
     while(pHead!=NULL) {
         compare_length = (pHead->lastName == NULL) ? 0 : strlen(pHead->lastName);
-        /*while(pHead->lastName!='\0')
-        {
-        	printf("%d %c\n",compare_length,pHead->lastName);
-        	compare_length++;
-        	getchar();
-        }*/
-        //strcpy(test,pHead->lastName);
-        //test = pHead->lastName;
         if(length == compare_length) {
             if(!strcasecmp(name, pHead->lastName))
                 return pHead;
@@ -43,8 +34,9 @@ void init_head_char()
             head_char0[i][j] = NULL;
 }
 
-entry *append(char lastName[], entry *e,int length)
+entry *append(char lastName[], entry *e)
 {
+    int length = strlen(lastName)-MINUS;
     entry *temp;
     if(e == NULL) {
         e = (entry*)malloc(sizeof(entry));
@@ -53,11 +45,8 @@ entry *append(char lastName[], entry *e,int length)
         temp = e->pNext;
     entry *new_entry;
     new_entry = (entry *)malloc(sizeof(entry));
-    //e = e->pNext;
-    //strcpy(e->lastName,lastName);
     new_entry->lastName = (char*)malloc(length * sizeof(char));
-    //strncpy(new_entry->lastName,lastName+MINUS,MAX_LAST_NAME_SIZE-MINUS);
-    strncpy(new_entry->lastName,lastName+MINUS, length-MINUS);
+    strncpy(new_entry->lastName,lastName+MINUS, length);
     e->pNext = new_entry;
     new_entry->pNext = temp;
     return e;

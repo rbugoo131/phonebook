@@ -33,6 +33,6 @@ static entry *head_char0[2][28];
 
 void init_head_char();
 entry *findName(char lastname[], entry *pHead);
-entry *append(char lastName[], entry *e,int length);
+entry *append(char lastName[], entry *e);
 
 #endif
